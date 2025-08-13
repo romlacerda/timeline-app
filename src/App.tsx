@@ -1,7 +1,9 @@
+import { TimelineGrid } from "./features/timeline/timeline-grid";
+
 function App() {
   return (
     <>
-      <h1>Hello World</h1>
+      <TimelineGrid />
     </>
   );
 }
