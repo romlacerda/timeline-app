@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 const mock = [
   {
     id: 1,
@@ -86,5 +88,37 @@ const mock = [
 ];
 
 export const useEvents = () => {
-  return { events: mock };
+  const lanes: Array<Array<typeof mock[0] & { lane: number }>> = [];
+
+  const assignLanes = () => {
+    const sortedEvents = mock.sort((a, b) => {
+      return dayjs(a.start).diff(dayjs(b.start));
+    });
+
+    for (let i = 0; i < sortedEvents.length; i++) {
+        const event = sortedEvents[i];
+      
+        const currentEnd = dayjs(event.end);
+        const nextStart = dayjs(sortedEvents[i + 1]?.start);
+
+        if (lanes.length === 0) {
+          lanes.push([event]);
+        } else {
+          for (let j = 0; j < lanes.length; j++) {
+            if (nextStart.isAfter(currentEnd)) {
+              lanes[j].push(event);
+              break;
+            } else {
+              lanes.push([event]);
+              break;
+            }
+          }
+        }
+    }
+
+  };
+
+  assignLanes();
+
+  return { lanes };
 };

@@ -1,8 +1,9 @@
-import { TimelineGrid } from "./features/timeline/timeline-grid";
+import { TimelineGrid } from "./features/timeline/components/timeline-grid";
 
 function App() {
   return (
     <>
+      <h1 className="text-2xl font-semibold px-4">Events Timeline</h1>
       <TimelineGrid />
     </>
   );
