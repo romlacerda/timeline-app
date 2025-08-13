@@ -1,6 +1,6 @@
 # Timeline App
 
-Timeline Assessment
+Timeline Assessment inspired in Google Calendar
 
 ## ✨ Features
 
