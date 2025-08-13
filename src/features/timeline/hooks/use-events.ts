@@ -105,7 +105,7 @@ export const useEvents = () => {
           lanes.push([event]);
         } else {
           for (let j = 0; j < lanes.length; j++) {
-            if (nextStart.isAfter(currentEnd)) {
+            if (nextStart.isBefore(currentEnd)) {
               lanes[j].push(event);
               break;
             } else {
@@ -119,6 +119,7 @@ export const useEvents = () => {
   };
 
   assignLanes();
+  console.log(lanes);
 
   return { lanes };
 };

@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 import type { Event } from "../types";
 
 const availableColors = [
-  "bg-red-500",
+  "bg-rose-500",
   "bg-blue-500",
-  "bg-green-500",
+  "bg-emerald-500",
   "bg-yellow-500",
   "bg-purple-500",
   "bg-pink-500",
@@ -13,26 +13,24 @@ const availableColors = [
   "bg-teal-500",
   "bg-cyan-500",
   "bg-lime-500",
-  "bg-emerald-500",
+  "bg-green-500",
 ] as const;
 
-type Props = {
-  event: Event;
-};
-
-export const EventBar = ({ event }: Props) => {
+export const EventBar = ({ event }: { event: Event }) => {
   const randomColor =
     availableColors[Math.floor(Math.random() * availableColors.length)];
 
   return (
     <div
-      className={`${randomColor} flex text-left p-2 text-xs flex-col rounded-lg
-        w-52
-      `}
+      className={`${randomColor} flex items-center p-2 text-xs flex-col rounded-lg w-60 gap-y-2 w-full`}
     >
-      {dayjs(event.start).format("MM/DD/YYYY")} -{" "}
-      {dayjs(event.end).format("MM/DD/YYYY")}
-      <span className="truncate text-ellipsis max-w-48">{event.name}</span>
+      <div className="text-xs w-full text-left">
+        {dayjs(event.start).format("MM/DD/YYYY")} -{" "}
+        {dayjs(event.end).format("MM/DD/YYYY")}
+      </div>
+      <span className="text-xs truncate w-full text-left" title={event.name}>
+        {event.name}
+      </span>
     </div>
   );
 };
