@@ -1,3 +1,5 @@
+import type { Event } from "../types";
+
 const availableColors = [
   "bg-red-500",
   "bg-blue-500",
@@ -13,13 +15,16 @@ const availableColors = [
   "bg-emerald-500",
 ] as const;
 
-export const EventBar = () => {
+export const EventBar = ({ event }: { event: Event }) => {
   const randomColor =
     availableColors[Math.floor(Math.random() * availableColors.length)];
 
   return (
-    <div className={`${randomColor} h-10 flex items-center p-2 text-sm`}>
-      EventBar
+    <div
+      className={`${randomColor} flex items-center p-2 text-xs flex-col rounded-md`}
+    >
+      {event.start} - {event.end}
+      <span className="text-sm">{event.name}</span>
     </div>
   );
 };
