@@ -29,7 +29,7 @@ Timeline Assessment inspired in Google Calendar
 timeline-app/
 ├── src/
 │   ├── features/
-│   │   └── timeline/
+│   │   └── events/
 │   │       ├── components/         # Timeline UI components
 │   │       │   ├── event-bar.tsx   # Individual event component
 │   │       │   └── timeline-grid.tsx # Main timeline grid
