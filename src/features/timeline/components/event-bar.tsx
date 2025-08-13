@@ -22,7 +22,7 @@ export const EventBar = ({ event }: { event: Event }) => {
 
   return (
     <div
-      className={`${randomColor} flex items-center p-2 text-xs flex-col rounded-lg w-60 gap-y-2 w-full`}
+      className={`${randomColor} flex items-center p-2 text-xs flex-col rounded-lg gap-y-2 w-full`}
     >
       <div className="text-xs w-full text-left">
         {dayjs(event.start).format("MM/DD/YYYY")} -{" "}
