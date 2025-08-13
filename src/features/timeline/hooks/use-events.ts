@@ -1,6 +1,10 @@
 import dayjs from "dayjs";
+import { useState, useMemo, useCallback } from "react";
+import type { Event } from "../types";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { getDatesInRange } from "../utils";
 
-const mock = [
+const mockEvents = [
   {
     id: 1,
     start: "2021-01-01",
@@ -87,13 +91,29 @@ const mock = [
   }
 ];
 
-export const useEvents = () => {
-  const lanes: Array<Array<typeof mock[0] & { lane: number }>> = [];
+dayjs.extend(isSameOrBefore);
 
-  const assignLanes = () => {
-    const sortedEvents = mock.sort((a, b) => {
-      return dayjs(a.start).diff(dayjs(b.start));
-    });
+export const useEvents = () => {
+  const [events, setEvents] = useState<Event[]>(mockEvents);
+
+  const updateEventName = (eventId: number, newName: string) => {
+    setEvents(prevEvents => 
+      prevEvents.map(event => 
+        event.id === eventId 
+          ? { ...event, name: newName }
+          : event
+      )
+    );
+  };
+
+
+  const assignLanes = useCallback(() => {
+
+    const lanesList: Event[][] = [];
+
+    const sortedEvents = [...events].sort((a, b) => 
+      dayjs(a.start).diff(dayjs(b.start))
+    );
 
     for (let i = 0; i < sortedEvents.length; i++) {
         const event = sortedEvents[i];
@@ -101,25 +121,25 @@ export const useEvents = () => {
         const currentEnd = dayjs(event.end);
         const nextStart = dayjs(sortedEvents[i + 1]?.start);
 
-        if (lanes.length === 0) {
-          lanes.push([event]);
+        if (lanesList.length === 0) {
+          lanesList.push([event]);
         } else {
-          for (let j = 0; j < lanes.length; j++) {
-            if (nextStart.isBefore(currentEnd)) {
-              lanes[j].push(event);
+          for (let j = 0; j < lanesList.length; j++) {
+            if (nextStart.isAfter(currentEnd)) {
+              lanesList[j].push(event);
               break;
             } else {
-              lanes.push([event]);
+              lanesList.push([event]);
               break;
             }
           }
         }
     }
 
-  };
+    return lanesList;
+  }, [events]);
 
-  assignLanes();
-  console.log(lanes);
+  const lanes = useMemo(() => assignLanes(), [assignLanes]);
 
-  return { lanes };
+  return { events, lanes, updateEventName, dateColumns: getDatesInRange(events[0].start, events[events.length - 1].end) };
 };
