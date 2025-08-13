@@ -1,4 +1,4 @@
-import { TimelineGrid } from "./features/timeline/components/timeline-grid";
+import { TimelineGrid } from "./features/events/components/timeline-grid";
 
 function App() {
   return (

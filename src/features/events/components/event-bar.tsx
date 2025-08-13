@@ -22,10 +22,9 @@ type Props = {
 };
 
 export const EventBar = ({ event, updateEventName }: Props) => {
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id: `event-${event.id}`,
-    });
+  const { setNodeRef, transform, isDragging } = useDraggable({
+    id: `event-${event.id}`,
+  });
 
   const eventColor = availableColors[event.id % availableColors.length];
 
@@ -39,8 +38,6 @@ export const EventBar = ({ event, updateEventName }: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      {...listeners}
-      {...attributes}
       className={`${eventColor} h-full flex items-center p-2 text-xs flex-col rounded-lg gap-y-2 w-full cursor-grab opacity-80 ${
         isDragging ? "opacity-50" : ""
       }`}
