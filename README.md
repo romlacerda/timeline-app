@@ -1,6 +1,6 @@
 # Timeline App
 
-Timeline Assessment
+Timeline Assessment inspired in Google Calendar
 
 ## ✨ Features
 
@@ -29,7 +29,7 @@ Timeline Assessment
 timeline-app/
 ├── src/
 │   ├── features/
-│   │   └── timeline/
+│   │   └── events/
 │   │       ├── components/         # Timeline UI components
 │   │       │   ├── event-bar.tsx   # Individual event component
 │   │       │   └── timeline-grid.tsx # Main timeline grid
@@ -110,7 +110,7 @@ Events are intelligently organized into lanes for optimal space usage:
 - Only creates new lanes when events actually conflict
 - Results in a more compact, readable timeline
 - Lane assignment is calculated dynamically based on event chronology
-- There is still a bug regarding the end date. Didn't have time to fix that.
+- There is still a bug regarding the end date. The EventBar component is not occupying all dates from startDate to endDate. Only startDate. Didn't have time to fix that.
 
 ### Drag & Drop (WIP)
 
