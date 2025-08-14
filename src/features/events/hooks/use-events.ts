@@ -4,6 +4,8 @@ import type { Event } from "../types";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { getDatesInRange } from "../utils";
 
+dayjs.extend(isSameOrBefore);
+
 const mockEvents = [
   {
     id: 1,
@@ -91,9 +93,10 @@ const mockEvents = [
   }
 ];
 
-dayjs.extend(isSameOrBefore);
+const INCLUSIVE_DAY_COUNT = 1;
 
 export const useEvents = () => {
+  // TODO: Add a hook to fetch events from the backend and add events to the state
   const [events, setEvents] = useState<Event[]>(mockEvents);
 
   const updateEventName = (eventId: number, newName: string) => {
@@ -118,18 +121,17 @@ export const useEvents = () => {
     for (let i = 0; i < sortedEvents.length; i++) {
         const event = sortedEvents[i];
       
-        const currentEnd = dayjs(event.end);
-        const nextStart = dayjs(sortedEvents[i + 1]?.start);
-
         if (lanesList.length === 0) {
-          lanesList.push([event]);
+          lanesList.push([{ ...event, diffDays: dayjs(event.end).diff(dayjs(event.start), 'day') + INCLUSIVE_DAY_COUNT }]);
         } else {
           for (let j = 0; j < lanesList.length; j++) {
-            if (nextStart.isAfter(currentEnd)) {
-              lanesList[j].push(event);
+            const lastEventInLane = lanesList[j][lanesList[j].length - 1];
+            const lastEventEnd = dayjs(lastEventInLane.end);
+            if (dayjs(event.start).isAfter(lastEventEnd)) {
+              lanesList[j].push({ ...event, diffDays: dayjs(event.end).diff(dayjs(event.start), 'day') + INCLUSIVE_DAY_COUNT });
               break;
             } else {
-              lanesList.push([event]);
+              lanesList.push([{ ...event, diffDays: dayjs(event.end).diff(dayjs(event.start), 'day') + INCLUSIVE_DAY_COUNT }]);
               break;
             }
           }
@@ -141,5 +143,8 @@ export const useEvents = () => {
 
   const lanes = useMemo(() => assignLanes(), [assignLanes]);
 
-  return { events, lanes, updateEventName, dateColumns: getDatesInRange(events[0].start, events[events.length - 1].end) };
+  return { events, lanes, updateEventName, dateColumns: getDatesInRange(
+    events.length > 0 ? events[0].start : dayjs().format("YYYY-MM-DD"), 
+    events.length > 0 ? events[events.length - 1].end : dayjs().format("YYYY-MM-DD")
+  ) };
 };

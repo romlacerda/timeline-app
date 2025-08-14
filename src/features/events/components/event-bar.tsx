@@ -38,7 +38,7 @@ export const EventBar = ({ event, updateEventName }: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`${eventColor} h-full flex items-center p-2 text-xs flex-col rounded-lg gap-y-2 w-full cursor-grab opacity-80 ${
+      className={`${eventColor} h-full flex items-center p-2 text-xs flex-col rounded-md gap-y-2 w-full cursor-grab ${
         isDragging ? "opacity-50" : ""
       }`}
     >
